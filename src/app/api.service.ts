@@ -41,7 +41,7 @@ export interface Quote {
   providedIn: 'root',
 })
 export class ApiService {
-  createQuote(payload: { vehicle: any; services: any[]; }): Observable<any> {
+  createQuote(payload: { vehicle: any; services: any[] }): Observable<any> {
     throw new Error('Method not implemented.');
   }
   private apiUrl = 'http://127.0.0.1:8000';
@@ -54,15 +54,20 @@ export class ApiService {
   }
 
   // Generate a quote
-  generateQuote(vehicleId: string, selectedServices: number[]): Observable<any> {
+  generateQuote(
+    vehicleId: string,
+    selectedServices: number[]
+  ): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/generate-quote/`, {
       vehicle_id: vehicleId,
-      selected_services: selectedServices
+      selected_services: selectedServices,
     });
   }
   // Create an order from a quote
   createOrder(quoteId: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/orders/create/`, { quote_id: quoteId });
+    return this.http.post<any>(`${this.apiUrl}/orders/create/`, {
+      quote_id: quoteId,
+    });
   }
 
   // Get all available services
@@ -77,7 +82,9 @@ export class ApiService {
 
   // Get models for a specific make
   getVehicleModels(makeId: number): Observable<VehicleModel[]> {
-    return this.http.get<VehicleModel[]>(`${this.apiUrl}/vehicle-models/${makeId}/`);
+    return this.http.get<VehicleModel[]>(
+      `${this.apiUrl}/vehicle-models/${makeId}/`
+    );
   }
 
   // Get available windscreen types
@@ -86,18 +93,24 @@ export class ApiService {
   }
 
   // Get windscreen customizations for a specific type
-  getWindscreenCustomizations(typeId: number): Observable<WindscreenCustomization[]> {
-    return this.http.get<WindscreenCustomization[]>(`${this.apiUrl}/windscreen-customizations/${typeId}/`);
+  getWindscreenCustomizations(
+    typeId: number
+  ): Observable<WindscreenCustomization[]> {
+    return this.http.get<WindscreenCustomization[]>(
+      `${this.apiUrl}/windscreen-customizations/${typeId}/`
+    );
   }
 
   // Get insurance providers
   getInsuranceProviders(): Observable<InsuranceProvider[]> {
-    return this.http.get<InsuranceProvider[]>(`${this.apiUrl}/insurance-providers/`);
+    return this.http.get<InsuranceProvider[]>(
+      `${this.apiUrl}/insurance-providers/`
+    );
   }
 
   // Submit a new service request
   submitService(serviceData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/submit-service/`, serviceData);
+    return this.http.post<any>(`${this.apiUrl}/generate-quote/`, serviceData);
   }
 
   // Get all quotes
@@ -111,14 +124,15 @@ export class ApiService {
   }
 
   updateQuoteStatus(quoteId: number, status: string): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/quotes/${quoteId}/update-status/`, { status });
+    return this.http.patch<any>(
+      `${this.apiUrl}/quotes/${quoteId}/update-status/`,
+      { status }
+    );
   }
-
 
   submitWorkProgress(formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/work-progress/submit/`, formData);
   }
-  
 
   getOrderDetails(vehicleRegNo: string) {
     return this.http.get(`/api/orders/${vehicleRegNo}`); // Adjust endpoint accordingly
@@ -136,7 +150,7 @@ export class ApiService {
   getOrderByNumber(orderNumber: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/orders/${orderNumber}`);
   }
-   
+
   // Store the selected order
   setSelectedOrder(order: any): void {
     this.setSelectedOrder = order;
