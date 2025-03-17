@@ -3,19 +3,26 @@
     <div class="container card">
       <h2 class="title">Vehicle & Service Details</h2>
 
-      <form (ngSubmit)="submitDetails()">
+      <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
         <!-- Vehicle Details -->
         <div class="form-group">
           <label>Vehicle Make</label>
-          <select [(ngModel)]="selectedMake" name="make" (change)="onMakeChange()" class="dropdown">
+          <select
+            formControlName="make"
+            name="make"
+            (change)="onMakeChange()"
+            class="dropdown"
+          >
             <option value="">Select Make</option>
-            <option *ngFor="let make of vehicleMakes" [value]="make.id">{{ make.name }}</option>
+            <option *ngFor="let make of vehicleMakes" [value]="make.id">
+              {{ make.name }}
+            </option>
           </select>
         </div>
 
         <div class="form-group">
           <label>Vehicle Model</label>
-          <select [(ngModel)]="selectedModel" name="model" class="dropdown">
+          <select formControlName="selectedModel" name="model" class="dropdown">
             <option value="">Select Model</option>
             <option *ngFor="let model of vehicleModels" [value]="model.id">
               {{ model.model }}
@@ -26,30 +33,47 @@
           <label for="vehicle">Select Vehicle</label>
           <select formControlName="vehicle" id="vehicle">
             <option *ngFor="let vehicle of vehicles" [value]="vehicle.id">
-              {{ vehicle.registration_number || 'Unknown Vehicle' }}
+              {{ vehicle.registration_number || "Unknown Vehicle" }}
             </option>
           </select>
         </div>
-  
+
         <div>
           <label for="user">Select User</label>
           <select formControlName="user" id="user">
-            <option *ngFor="let user of users" [value]="user.id">{{ user.full_name }}</option>
+            <option *ngFor="let user of users" [value]="user.id">
+              {{ user.full_name }}
+            </option>
           </select>
         </div>
 
-
         <!-- Submit Button -->
-        <button 
-          type="button" 
-          (click)="submitDetails()" 
-          [disabled]="!selectedServices.length || isSubmitting"
-          class="submit-button">
+        <button
+          type="submit"
+          [disabled]="vehicleForm.invalid"
+          class="submit-button"
+        >
           <span *ngIf="!isSubmitting">Submit</span>
           <span *ngIf="isSubmitting" class="loading">
-            <svg class="spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <svg
+              class="spinner"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
             Submitting...
           </span>
