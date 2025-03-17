@@ -44,8 +44,9 @@ export class SharedService {
   }
 
   getVehicleData() {
-    return this.vehicleData;
+    return this.vehicleData || { registration_number: '', year_of_make: '' };
   }
+  
 
   clearVehicleData() {
     this.vehicleData = null;

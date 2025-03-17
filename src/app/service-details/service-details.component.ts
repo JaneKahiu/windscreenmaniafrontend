@@ -120,6 +120,7 @@ export class ServiceDetailsComponent implements OnInit {
     const savedData = this.sharedService.getServiceData();
     if (savedData) {
       this.selectedServices = savedData.selectedServices || [];
+      this.vehicleData = this.sharedService.getVehicleData(); 
       this.selectedWindscreenType = savedData.windscreenType || '';
       this.selectedCustomization = savedData.windscreenCustomizations || '';
       this.selectedInsuranceProvider = savedData.insuranceProvider || '';
@@ -133,33 +134,36 @@ export class ServiceDetailsComponent implements OnInit {
       console.error('Please fill in all required user details');
       return;
     }
-
+  
     this.isSubmitting = true;
-
+  
     const serviceData = {
       selected_services: this.selectedServices,
-      windscreen_details: this.selectedWindscreenType ? {
-        type_id: this.selectedWindscreenType,
-        customization_id: this.selectedCustomization
-      } : null,
+      windscreen_details: this.selectedWindscreenType
+        ? {
+            type_id: this.selectedWindscreenType,
+            customization_id: this.selectedCustomization,
+          }
+        : null,
       insurance_provider: this.selectedInsuranceProvider,
       user_details: this.userDetails,
-      registration_number: this.vehicleData.registration_number, // Include vehicle details
-      year_of_make: this.vehicleData.year_of_make // Include vehicle details
+      registration_number: this.vehicleData.registration_number, // Ensure this is populated
+      year_of_make: this.vehicleData.year_of_make, // Ensure this is populated
     };
-
+  
     this.apiService.submitService(serviceData).subscribe({
       next: (response) => {
         console.log('Service submitted successfully:', response);
         this.sharedService.clearServiceData();
-        this.sharedService.clearVehicleData(); // Clear vehicle details after submission
+        this.sharedService.clearVehicleData();
         this.isSubmitting = false;
         this.router.navigate(['/quote']);
       },
       error: (error) => {
         console.error('Error submitting service:', error);
         this.isSubmitting = false;
-      }
+      },
     });
   }
+  
 }

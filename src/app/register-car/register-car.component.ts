@@ -62,12 +62,12 @@ export class RegisterCarComponent {
   registerCar() {
     if (this.registerForm.valid) {
       const vehicleData = this.registerForm.value;
-
+  
       this.apiService.registerVehicle(vehicleData).subscribe((response) => {
         if (response && response.services) {
           // Store vehicle details in SharedService
           this.sharedService.setVehicleData(vehicleData);
-
+  
           // Navigate to services page
           this.router.navigate(['/display-services'], { state: { services: response.services } });
         }
@@ -76,4 +76,5 @@ export class RegisterCarComponent {
       console.log('Form is invalid');
     }
   }
+  
 }
